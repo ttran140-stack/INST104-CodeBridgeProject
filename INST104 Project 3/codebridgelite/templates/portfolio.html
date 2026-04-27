@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<section class="card">
+    <div class="section-heading">
+        <h2>Your Portfolio</h2>
+        <p>Completed challenge work appears here as mini portfolio artifacts you can show as evidence of learning.</p>
+    </div>
+</section>
+
+{% if portfolio_items %}
+    <div class="portfolio-grid">
+        {% for item in portfolio_items %}
+            <section class="card portfolio-card">
+                <h3>{{ item.challenge_title }}</h3>
+                <p><strong>Thinking score:</strong> {{ item.thinking_score }}</p>
+
+                <h4>Input Understanding</h4>
+                <p>{{ item.input_answer }}</p>
+
+                <h4>Output Understanding</h4>
+                <p>{{ item.output_answer }}</p>
+
+                <h4>Pseudocode</h4>
+                <pre>{{ item.pseudocode }}</pre>
+
+                <h4>Final Code</h4>
+                <pre>{{ item.code }}</pre>
+            </section>
+        {% endfor %}
+    </div>
+{% else %}
+    <section class="card">
+        <p>No completed projects yet. Finish a challenge to add work here.</p>
+    </section>
+{% endif %}
+{% endblock %}
