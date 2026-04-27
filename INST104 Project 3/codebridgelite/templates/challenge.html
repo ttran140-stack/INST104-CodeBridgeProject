@@ -1,0 +1,102 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<section class="card challenge-header-card">
+    <div class="section-heading">
+        <h2>{{ challenge.title }}</h2>
+        <p>{{ challenge.description }}</p>
+    </div>
+</section>
+
+<section class="card">
+    <h3>Step 1: Break down the problem</h3>
+    <p class="muted-text">
+        Before writing code, explain what the function takes in, what it should return, and how you plan to solve it.
+    </p>
+
+    <form method="POST">
+        <label for="input_answer">What is the input?</label>
+        <textarea id="input_answer" name="input_answer" rows="3" placeholder="Example: a list of numbers">{{ form_data.input_answer }}</textarea>
+
+        <label for="output_answer">What is the output?</label>
+        <textarea id="output_answer" name="output_answer" rows="3" placeholder="Example: a list containing only even numbers">{{ form_data.output_answer }}</textarea>
+
+        <label for="pseudocode">Write your pseudocode / step-by-step plan</label>
+        <textarea id="pseudocode" name="pseudocode" rows="6" placeholder="Example: loop through the list, check if each number is even, add it to a new list, return the new list">{{ form_data.pseudocode }}</textarea>
+
+        <label for="code">Step 2: Write your Python code</label>
+        <textarea id="code" name="code" rows="16" class="code-box">{{ form_data.code }}</textarea>
+
+        <button type="submit" class="button primary-button">Submit Work</button>
+    </form>
+</section>
+
+{% if saved %}
+<section class="card success">
+    <p>✅ Your submission was saved successfully.</p>
+</section>
+{% endif %}
+
+{% if thinking_result %}
+<section class="card result-card">
+    <h3>Computational Thinking Feedback</h3>
+    <p><strong>Thinking score:</strong> {{ thinking_result.score }}</p>
+
+    <ul class="feedback-list">
+        {% for item in thinking_result.feedback %}
+            <li>{{ item }}</li>
+        {% endfor %}
+    </ul>
+
+    <p><strong>Found concepts:</strong> {{ thinking_result.found | join(", ") if thinking_result.found else "None yet" }}</p>
+    <p><strong>Missing concepts:</strong> {{ thinking_result.missing | join(", ") if thinking_result.missing else "None" }}</p>
+</section>
+{% endif %}
+
+{% if code_result %}
+<section class="card result-card">
+    <h3>Code Feedback</h3>
+    <p><strong>Status:</strong> {{ code_result.status }}</p>
+
+    {% if code_result.stdout %}
+        <h4>Output</h4>
+        <pre>{{ code_result.stdout }}</pre>
+    {% endif %}
+
+    {% if code_result.stderr %}
+        <h4>Error</h4>
+        <pre>{{ code_result.stderr }}</pre>
+    {% endif %}
+
+    <h4>Test Results</h4>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Test</th>
+                    <th>Passed</th>
+                    <th>Expected</th>
+                    <th>Actual</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for test in code_result.tests %}
+                    <tr>
+                        <td>{{ test.name }}</td>
+                        <td>{{ "Yes" if test.passed else "No" }}</td>
+                        <td>{{ test.expected }}</td>
+                        <td>{{ test.actual }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if code_result.all_passed %}
+        <p class="status complete">🎉 All tests passed. Great job!</p>
+    {% else %}
+        <p class="status">Keep going — not all tests passed yet.</p>
+    {% endif %}
+</section>
+{% endif %}
+{% endblock %}

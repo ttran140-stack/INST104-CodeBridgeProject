@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeBridge Lite</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="nav-wrapper">
+            <div class="brand">
+                <h1>CodeBridge Lite</h1>
+                <p class="tagline">Think it through. Code it out.</p>
+            </div>
+
+            <nav class="main-nav">
+                <a href="{{ url_for('home') }}">Home</a>
+                <a href="{{ url_for('progress') }}">Progress</a>
+                <a href="{{ url_for('portfolio') }}">Portfolio</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-box">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const codeBoxes = document.querySelectorAll(".code-box");
+
+        codeBoxes.forEach(function (box) {
+            box.addEventListener("keydown", function (e) {
+                if (e.key === "Tab") {
+                    e.preventDefault();
+
+                    const start = this.selectionStart;
+                    const end = this.selectionEnd;
+                    const tab = "    ";
+
+                    this.value =
+                        this.value.substring(0, start) +
+                        tab +
+                        this.value.substring(end);
+
+                    this.selectionStart = this.selectionEnd = start + tab.length;
+                }
+            });
+        });
+    });
+    </script>
+</body>
+</html>

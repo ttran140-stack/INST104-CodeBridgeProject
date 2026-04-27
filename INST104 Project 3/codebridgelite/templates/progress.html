@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<section class="card">
+    <div class="section-heading">
+        <h2>Your Progress</h2>
+        <p>Track your challenge completion and points as you build your Python skills.</p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-box">
+            <h3>{{ total_challenges }}</h3>
+            <p>Total Challenges</p>
+        </div>
+        <div class="stat-box">
+            <h3>{{ completed_count }}</h3>
+            <p>Completed</p>
+        </div>
+        <div class="stat-box">
+            <h3>{{ points }}</h3>
+            <p>Total Points</p>
+        </div>
+    </div>
+</section>
+
+<section class="card">
+    <h3>Completed Challenge IDs</h3>
+    {% if completed_ids %}
+        <div class="pill-list">
+            {% for cid in completed_ids %}
+                <span class="pill complete-pill">Challenge {{ cid }}</span>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No completed challenges yet. Start with one on the home page.</p>
+    {% endif %}
+</section>
+{% endblock %}
